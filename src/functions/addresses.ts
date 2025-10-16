@@ -1,18 +1,18 @@
-import { forEach } from 'lodash';
 import { bitcoin, network } from '../config';
 import type { BIP32Interface } from 'bip32';
-//import { wallet } from './wallet';
 
 interface DeriveAddresses {
 	masterKey: BIP32Interface;
 	accountIndex?: number;
 	numAddresses?: number;
+	addressIndex?: number;
 }
 
 export const deriveAddresses = ({
 	masterKey,
 	accountIndex = 0,
 	numAddresses = 5,
+	addressIndex = 0,
 }: DeriveAddresses) => {
 	const addresses = [];
 
@@ -22,7 +22,8 @@ export const deriveAddresses = ({
 
 	// Se generarán tantas direcciones con sus llaves hijas, como se haya definido en numAddresses
 	for (let i = 0; i < numAddresses; i++) {
-		const path = `${basePath}/${i}`;
+		const startIndex = addressIndex + i;
+		const path = `${basePath}/${startIndex}`;
 		const child = masterKey.derivePath(path);
 
 		// Aquí se genea una dirección Native Segwit
@@ -33,7 +34,7 @@ export const deriveAddresses = ({
 
 		// Y se agrega a la lista de direcciones
 		addresses.push({
-			index: i,
+			index: startIndex,
 			path,
 			address,
 			privateKey: child.toWIF(),
@@ -43,9 +44,3 @@ export const deriveAddresses = ({
 
 	return addresses;
 };
-
-/* export const addresses = deriveAddresses(wallet.masterKey);
-forEach(addresses, ({ address, index, path }) => {
-	console.log(`Address ${index}: ${address}`);
-	console.log(`Path: ${path}`);
-}); */

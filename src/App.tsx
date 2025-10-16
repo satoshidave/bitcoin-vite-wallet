@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
@@ -9,6 +8,7 @@ import { createTransaction } from './functions/transaction';
 import { mockUtxos } from './examples/mockTx';
 import { verifyTransaction } from './functions/verification';
 import { recoverWallet } from './functions/recovery';
+import { discoverUsedAdresses } from './functions/discover';
 
 function App() {
 	const [count, setCount] = useState(0);
@@ -37,6 +37,11 @@ function App() {
 			});
 
 			recoverWallet({ mnemonic: wallet.mnemonic, passphrase });
+
+			const usedAddresses = discoverUsedAdresses({
+				masterKey: wallet.masterKey,
+			});
+			console.log('Used addresses:', usedAddresses);
 		})();
 	}, []);
 
