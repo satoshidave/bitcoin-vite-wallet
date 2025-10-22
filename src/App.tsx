@@ -38,7 +38,7 @@ function App() {
 
 			recoverWallet({ mnemonic: wallet.mnemonic, passphrase });
 
-			const usedAddresses = discoverUsedAdresses({
+			const usedAddresses = await discoverUsedAdresses({
 				masterKey: wallet.masterKey,
 			});
 			console.log('Used addresses:', usedAddresses);

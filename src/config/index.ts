@@ -9,6 +9,11 @@ if (typeof (window as any).Buffer === 'undefined') {
 	(window as any).Buffer = Buffer;
 }
 
+const blockchainServer = {
+	testnet: 'https://mempool.space/testnet/',
+	bitcoin: 'https://mempool.space',
+};
+
 // Se inicializa el modulo bip32 con la implementación de tiny-secp256k1
 const bip32 = BIP32Factory(secp256k1);
 const ECPair = ECPairFactory(secp256k1);
@@ -16,4 +21,4 @@ const ECPair = ECPairFactory(secp256k1);
 // Se define la red. Testnet para pruebas, y bitcoin para mainnet
 const network = bitcoin.networks.testnet;
 
-export { bip39, bip32, network, bitcoin, ECPair };
+export { bip39, bip32, network, bitcoin, ECPair, blockchainServer };
